@@ -1,0 +1,75 @@
+{% extends 'pattern.html' %} {% block content %}
+
+<div class="container">
+  <section id="content">
+    <form method="POST">
+      <h1>Регистрация</h1>
+      <div>
+        <input
+          type="text"
+          placeholder="Имя"
+          required=""
+          id="name"
+          name="name"
+        />
+      </div>
+      <div>
+        <input
+          type="text"
+          placeholder="логин"
+          required=""
+          id="login"
+          name="login"
+        />
+      </div>
+      <div>
+        <input
+          type="text"
+          placeholder="E-mail"
+          required=""
+          id="email"
+          name="email"
+        />
+      </div>
+      <div>
+        <input
+          type="text"
+          placeholder="фото"
+          required=""
+          id="image"
+          name="image"
+        />
+      </div>
+      <div>
+        <input
+          type="password"
+          placeholder="пароль"
+          required=""
+          id="psw"
+          name="psw"
+        />
+      </div>
+
+      <div>
+        <input
+          type="password"
+          placeholder="повторите пароль"
+          required=""
+          id="repsw"
+          name="repsw"
+        />
+      </div>
+
+      <div>
+        <input type="submit" value="Регистрация" />
+        <a href="#">Забыли пароль?</a>
+        <a href="registration">Регистрация</a>
+      </div>
+    </form>
+    <!-- form -->
+  </section>
+  <!-- content -->
+</div>
+<!-- container -->
+
+{% endblock %}
