@@ -1,5 +1,7 @@
-{% extends 'pattern.html' %} {% block content %}
-
+{% extends 'pattern.html' %} {% block content %} {% for cat, msg in
+get_flashed_messages(True) %}
+<div class="flash {{cat}}">{{msg}}</div>
+{% endfor %}
 <div class="container">
   <section id="content">
     <form method="POST">
@@ -63,7 +65,7 @@
       <div>
         <input type="submit" value="Регистрация" />
         <a href="#">Забыли пароль?</a>
-        <a href="registration">Регистрация</a>
+        <a href="login">Войти</a>
       </div>
     </form>
     <!-- form -->

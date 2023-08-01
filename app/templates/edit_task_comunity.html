@@ -1,0 +1,46 @@
+{% extends 'pattern.html' %} {% block content %} Hello dd
+
+<h1>Редактирование задания Comunity</h1>
+
+<div>
+  <form method="post">
+    <input
+      type="text"
+      name="title"
+      id="title"
+      value="{{ task_data.title }}"
+      placeholder="Название"
+    />
+    * <br />
+    <input
+      type="text"
+      name="text"
+      id="text"
+      value="{{ task_data.text_task }}"
+      placeholder="Текст"
+    />
+    * <br />
+    <input
+      type="text"
+      name="photo"
+      id="photo"
+      value="{{ task_data.photo }}"
+      placeholder="Фото"
+    />
+    * <br />
+    <input
+      type="text"
+      name="level"
+      id="level"
+      value="{{ task_data.level }}"
+      placeholder="Уровень сложности"
+    />
+    * <br />
+    <input type="submit" value="Сохранить" />
+  </form>
+  <br />
+  <br />
+  <br />
+</div>
+
+{% endblock %}

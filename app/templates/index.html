@@ -1,4 +1,8 @@
-{% extends 'pattern.html' %} {% block content %} Hello dd
+{% extends 'pattern.html' %} {% block content %} {% for cat, msg in
+get_flashed_messages(True) %}
+<div class="flash {{cat}}">{{msg}}</div>
+{% endfor %} Hello dd
 <h1>Hello</h1>
+<a href="logout">Выход</a>
 
 {% endblock %}

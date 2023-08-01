@@ -1,0 +1,8 @@
+{% extends 'pattern.html' %} {% block content %} Hello dd
+
+<h1>Это комьюнити</h1>
+<div><b>Заголовок:</b> {{ task_data.title }} <br /></div>
+<div><b>Дата:</b> {{ task_data.data_pub }} <br /></div>
+<div><b>Сложность:</b> {{ task_data.level }} <br /></div>
+<div><b>Текст:</b> {{ task_data.text_task }} <br /></div>
+{% endblock %}

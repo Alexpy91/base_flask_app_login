@@ -1,2 +1,14 @@
-{% extends 'pattern.html' %} {% block content %} {{ user_data.name }} Profile
-data {% endblock %}
+{% extends 'pattern.html' %} {% block content %} Добро пожаловать
+<b>{{ user_data.name }} </b>
+<div>
+  <b>Имя пользователя:</b> {{ user_data.name }} <br />
+  <b>Логин:</b> {{ user_data.login }} <br />
+  <b>E-mail:</b> {{ user_data.email }}<br />
+  <b>E-mail:</b> {{ user_data.data_reg }}<br />
+
+  <b>Очки опыта:</b> {{ user_data.points }}<br />
+  <b>Уровень:</b> {{ user_data.level }}<br />
+  <a href="logout">Выход</a>
+</div>
+
+{% endblock %}

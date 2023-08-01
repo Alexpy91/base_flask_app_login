@@ -1,7 +1,7 @@
 from app import app
 from flask import render_template, request, session, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.models import Users
+from app.models import Users, Task
 from flask_sqlalchemy import SQLAlchemy
 from app import db
 from datetime import datetime
@@ -11,13 +11,47 @@ from flask_login import login_user, login_required, logout_user
 def index():					  #  главная функция  	
 	return render_template('index.html',title='Главная страница')  #  возвращаем адрес главн страницы 
 
+@app.route('/comunity', methods=['GET'])  #  
+@login_required
+def comunity():	
+	task_data = Task.query.get(1)	  #  	
+	return render_template('comunity.html',title='Comunity', task_data=task_data)  #  возвращаем адрес главн страницы 
 
-
-
-
+@app.route('/edit_task_comunity', methods=['GET', 'POST'])
+@login_required
+def edit_task_comunity():
+	if user_name == 'admin':
+		task_data = Task.query.get(1)
+		if request.method == 'POST':
+			task_data.title = request.form['title']
+			task_data.text_task = request.form['text']
+			task_data.photo = request.form['photo']
+			task_data.level = request.form['level']
+			task_data.data_pub = datetime.now()
+			
+			
+			db.session.add(task_data)  #  добавление в сессию
+			db.session.flush()
+			db.session.commit()
+			return redirect('/')
+			
+		else:
+			return render_template('edit_task_comunity.html',title='Редактирование Задания Comunity', task_data=task_data)  #  возвращаем адрес главн страницы 
+		
+	else:
+		return render_template('index.html',title='Main')  #  возвращаем адрес главн страницы 
+	
+@app.route('/admin', methods=['GET'])  #  роут для главной страницы (метод ГЕТ)
+@login_required
+def admin():					  #  главная функция  	
+	user_data = Users.query.get(user_id)  #  В скобках нужно как то передать id того пользователя который авторизирован
+	if user_name == 'admin':
+		return render_template('admin.html',title='Админка страница')  #  возвращаем адрес главн страницы 
+	else:
+		return render_template('index.html',title='Профиль пользователя', user_data=user_data)
 
 @app.route('/registration', methods=['POST', 'GET'])
-def registratrion():
+def registration():
 	if request.method == 'POST':
 		try:
 			hash = generate_password_hash(request.form['psw'])  #  получение хеша введенного пароля для сохр его в базе
@@ -26,10 +60,13 @@ def registratrion():
 			db.session.add(u)  #  добавление в сессию
 			db.session.flush()  #  сохранение в сессии
 			db.session.commit()  #  сохранение в базе
+			flash("Пользователь зарегстрирован!", category='error')
+			return redirect(url_for('login'))
 
 		except:	
 			db.session.rollback()  #  откат сохранения из базы
-			print("Ошибка добавления в базу данных")
+			flash("Ошибка при регистрации!", category='error')
+			
 	return render_template('registration.html',title='Регистрация')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -43,8 +80,16 @@ def autorization():
 		if user and check_password_hash(user.password, password):  #  сравниваем хэш пароля в базе и хэш созданный для введенного при авторизации пароля 
 			login_user(user)  #  авторизируем в системе пользователя user
 			next_page = request.args.get('next')  #  запоминаем по какому адресу до авторизации пытался попасть пользователь 
-			return redirect(next_page)  #  перенаправляем его на эту страницу после авторизации
-
+			global user_id, user_name
+			user_id = user.id
+			user_name = user.login
+			if user.login == 'admin':
+				return redirect(url_for('admin'))
+			else:
+				if next_page != None:	
+					return redirect(next_page)  #  перенаправляем его на эту страницу после авторизации
+				else:
+					return redirect(url_for('index'))
 			# return redirect(url_for('profile'))
 		else:
 			flash("Неверные поля логин или пароль!", category='error')
@@ -66,7 +111,7 @@ def logout():
 @app.route('/profile', methods=['GET'])
 @login_required  #Вешается если на эту страницу только авторизованные
 def profile():
-	user_data = Users.query.get(1)  #  В скобках нужно как то передать id того пользователя который авторизирован
+	user_data = Users.query.get(user_id)  #  В скобках нужно как то передать id того пользователя который авторизирован
 	return render_template('profile.html',title='Профиль пользователя', user_data=user_data)
 
 
